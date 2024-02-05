@@ -3,7 +3,18 @@
     hosts:
       centos7:
         ansible_connection: docker
+        ansible_host: fnndsc
   deb:
     hosts:
       ubuntu:
         ansible_connection: docker
+        ansible_host: myubuntu
+  fedora:
+    hosts:
+      fedora:
+        ansible_connection: docker
+        ansible_host: pycontribs 
+  local:
+    hosts:
+      localhost:
+        ansible_connection: local
