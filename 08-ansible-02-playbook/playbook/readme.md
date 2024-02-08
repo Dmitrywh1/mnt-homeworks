@@ -6,7 +6,7 @@ Clickhouse x Vector ansible-playbook
 Репозиторий для 2 домашнего задания в рамках курса `SHDEVOPS-2`
 
 ##### Версия 
-`08-ansible-02-playbook`
+`1.0`
 
 Синопсис
 =====================
