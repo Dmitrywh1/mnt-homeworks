@@ -1,4 +1,6 @@
 ![alt text](image.png)
+
+
 Clickhouse x Vector x vk_lighthouse ansible-playbook
 =====================
 
