@@ -8,7 +8,7 @@
 ## Основная часть
 
 1. Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает LightHouse.
-[playbook](https://github.com/Dmitrywh1/mnt-homeworks/blob/MNT-video/08-ansible-03-yandex/playbook/site.yml)
+[playbook](https://github.com/Dmitrywh1/mnt-homeworks/blob/08-ansible-03-yandex/08-ansible-03-yandex/playbook/site.yml)
 
 ```
 Подсулунл в вектор логи access nginx
@@ -45,6 +45,8 @@ done
 ![alt text](image-3.png)
 9. Подготовьте README.md-файл по своему playbook. В нём должно быть описано: что делает playbook, какие у него есть параметры и теги.
 10. Готовый playbook выложите в свой репозиторий, поставьте тег `08-ansible-03-yandex` на фиксирующий коммит, в ответ предоставьте ссылку на него.
+
+[08-ansible-03-yandex](https://github.com/Dmitrywh1/mnt-homeworks/blob/08-ansible-03-yandex/08-ansible-03-yandex/playbook/readme.md)
 
 ---
 
