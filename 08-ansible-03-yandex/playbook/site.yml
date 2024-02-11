@@ -1,0 +1,131 @@
+---
+- name: Install Nginx
+  hosts: lighthouse
+  handlers:
+    - name: Start Nginx
+      become: true
+      command: nginx
+    - name: Nginx reload
+      become: true
+      command: nginx -s reload
+  tasks:
+    - name: NGINX | Install epel-release
+      become: true
+      ansible.builtin.yum:
+        name: epel-release
+        state: present
+    - name: NGINX | Install nginx
+      become: true
+      ansible.builtin.yum:
+        name: nginx
+        state: present
+      notify: Start Nginx
+    - name: NGINX | Generate nginx.conf
+      become: true
+      template: 
+        src: templates/nginx.conf.j2
+        dest: "{{ nginx.conf }}/nginx.conf"
+        mode: 0644
+      notify: Nginx reload
+- name: Install Lighthouse
+  hosts: lighthouse
+  handlers:
+    - name: Nginx reload
+      become: true
+      command: nginx -s reload
+  pre_tasks:
+    - name: Lighthouse | Install dependencies 
+      become: true
+      ansible.builtin.yum:
+        name: git
+        state: present
+  tasks: 
+    - name: Lighthouse | Clone repo
+      become: true
+      git:
+        repo: "{{ lighthouse.repo }}"
+        version: master
+        dest: "{{ lighthouse.www_dest }}"
+    - name: Lighthouse | Create lighthouse config
+      become: true
+      template:
+        src: templates/lighthouse.conf.j2
+        dest: /etc/nginx/conf.d/lighthouse.conf
+        mode: 0644
+      notify: Nginx reload
+- name: Install Clickhouse
+  hosts: clickhouse
+  handlers:
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+  tasks:
+    - block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+          with_items: "{{ clickhouse_packages }}"
+      rescue:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
+    - name: Install clickhouse packages
+      become: true
+      ansible.builtin.yum:
+        name:
+          - clickhouse-common-static-{{ clickhouse_version }}.rpm
+          - clickhouse-client-{{ clickhouse_version }}.rpm
+          - clickhouse-server-{{ clickhouse_version }}.rpm
+      notify: Start clickhouse service
+    - name: Configuration Clickhouse
+      become: true
+      template:
+        src: templates/clickhouse-config.xml.j2
+        dest: /etc/clickhouse-server
+      notify: Start clickhouse service
+    - name: Flush handlers
+      meta: flush_handlers
+    - name: Create database
+      shell: "clickhouse-client -q 'create database {{ clickhouse_data.db }};'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc !=82
+      changed_when: create_db.rc == 0
+    - name: Check if table exists
+      shell: "clickhouse-client -q \"SHOW TABLES LIKE '{{ clickhouse_data.table }}';\""
+      register: check_table
+    - name: Create table
+      shell: "clickhouse-client -q 'CREATE TABLE {{ clickhouse_data.table }} ( message String) ENGINE = MergeTree() ORDER BY tuple();'"
+      when: check_table.rc != 0
+- name: Install Vector
+  hosts: vector
+  handlers:
+    - name: Start vector service
+      become: true
+      ansible.builtin.service:
+        name: vector
+        state: restarted
+  tasks:
+    - name: Create install dir
+      ansible.builtin.file:
+        path: "{{ vector_install_dir }}"
+        state: directory
+      become: true
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/{{ vector_version }}/vector-0.35.0-1.x86_64.rpm"
+        dest: "{{ vector_install_dir }}/vector-0.35.0-1.x86_64.rpm"
+      become: true
+    - name: Install vector packages
+      ansible.builtin.yum:
+        name: "{{ vector_install_dir }}/vector-0.35.0-1.x86_64.rpm"
+      become: true
+      notify: Start vector service
+    - name: Generate vector.yaml
+      template: src=vector.toml.j2 dest={{ vector_config }}
+      become: true
+      notify: Start vector service
+
