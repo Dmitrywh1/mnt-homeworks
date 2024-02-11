@@ -22,7 +22,7 @@
       notify: Start Nginx
     - name: NGINX | Generate nginx.conf
       become: true
-      template: 
+      template:
         src: templates/nginx.conf.j2
         dest: "{{ nginx.conf }}/nginx.conf"
         mode: 0644
@@ -34,12 +34,12 @@
       become: true
       command: nginx -s reload
   pre_tasks:
-    - name: Lighthouse | Install dependencies 
+    - name: Lighthouse | Install dependencies
       become: true
       ansible.builtin.yum:
         name: git
         state: present
-  tasks: 
+  tasks:
     - name: Lighthouse | Clone repo
       become: true
       git:
@@ -90,15 +90,15 @@
     - name: Flush handlers
       meta: flush_handlers
     - name: Create database
-      shell: "clickhouse-client -q 'create database {{ clickhouse_data.db }};'"
+      shell: "clickhouse-client -q 'create database nginxdb;'"
       register: create_db
       failed_when: create_db.rc != 0 and create_db.rc !=82
       changed_when: create_db.rc == 0
     - name: Check if table exists
-      shell: "clickhouse-client -q \"SHOW TABLES LIKE '{{ clickhouse_data.table }}';\""
+      shell: "clickhouse-client -q \"SHOW TABLES LIKE 'nginxdb.access_logs';\""
       register: check_table
     - name: Create table
-      shell: "clickhouse-client -q 'CREATE TABLE {{ clickhouse_data.table }} ( message String) ENGINE = MergeTree() ORDER BY tuple();'"
+      shell: "clickhouse-client -q 'CREATE TABLE nginxdb.access_logs ( message String) ENGINE = MergeTree() ORDER BY tuple();'"
       when: check_table.rc != 0
 - name: Install Vector
   hosts: vector
@@ -128,4 +128,3 @@
       template: src=vector.toml.j2 dest={{ vector_config }}
       become: true
       notify: Start vector service
-

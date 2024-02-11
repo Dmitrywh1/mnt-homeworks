@@ -1,9 +1,8 @@
-![alt text](image-2.png)
-
-Clickhouse x Vector ansible-playbook
+![alt text](image.png)
+Clickhouse x Vector x vk_lighthouse ansible-playbook
 =====================
 
-Репозиторий для 2 домашнего задания в рамках курса `SHDEVOPS-2`
+Репозиторий для 3 домашнего задания в рамках курса `SHDEVOPS-2`
 
 ##### Версия 
 `1.0`
@@ -11,13 +10,14 @@ Clickhouse x Vector ansible-playbook
 Синопсис
 =====================
 
-Playbook устанавливает [Clickhouse](https://clickhouse.com/) и [Vector](https://vector.dev/).
+Playbook устанавливает [Clickhouse](https://clickhouse.com/), [Vector](https://vector.dev/), [Lighthouse](https://github.com/VKCOM/lighthouse), Nginx на трех распределенных ВМ.
 
 Используются следующие модули:
 - `get_url` - скачивание rpm пакетов с удаленных ресурсов
+- `git` - клонирование репозитория lighthouse
 - `yum` - установка скачанных пакетов
-- `command` - создание БД в clickhouse
-- `file` - создание директории, куда помещаются установочные пакеты и конфигурация Vector
+- `command` - создание БД и таблицы в clickhouse
+- `file` - создание директории, куда помещаются установочные пакеты 
 - конфигурация для Vector создается с помощью `template`
 - включены `handlers` для перезагрузки сервисов в случае изменений конфигурации
 
@@ -35,7 +35,21 @@ Playbook устанавливает [Clickhouse](https://clickhouse.com/) и [Ve
 2. Перейти в каталог с `site.yml`
 3. Выполнить команду `ansible-playbook -i inventory/prod.yml site.yml` ( При необходимости можно добавить флаг `-vvv` для подробного вывода процеса исполннеия playbook)
 
-Установка
+Приминение
+=====================
+
+После выполнения playbook заходим на `http://<адрес вашей ВМ с lighthouse>/#http://<адрес ВМ с Clickhouse>:8123/?user=default`
+
+Выполняем запрос к таблице с логами:
+
+`select * from nginxdb.access_logs`
+
+В результате получаем логи запросов, когда кто-то обращается к `nginx`, который в нашем случае установлен на машине с `Vector`
+
+
+
+
+Поддержка
 =====================
 
 Если у Вас возникла сложность по мере установки - можно написать на почту поддержки morgotq@gmail.com :)

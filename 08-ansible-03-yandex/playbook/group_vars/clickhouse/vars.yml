@@ -5,9 +5,5 @@ clickhouse_packages:
   - clickhouse-server
   - clickhouse-common-static
 
-clickhouse_data:
-  db: nginxdb
-  table: nginxdb.access_logs
-  
 ansible_ssh_user: centos
 
