@@ -1,0 +1,8 @@
+---
+# defaults file for roles/vector-role
+
+ansible_ssh_user: centos
+
+vector_version: 0.35.0
+vector_install_dir: /opt/vector
+vector_config: /etc/vector/vector.toml

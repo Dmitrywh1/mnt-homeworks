@@ -1,0 +1,10 @@
+---
+# handlers file for roles/lighthouse
+
+- name: Nginx reload
+  become: true
+  command: nginx -s reload
+
+- name: Start Nginx
+  become: true
+  command: nginx

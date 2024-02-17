@@ -1,0 +1,13 @@
+---
+# defaults file for roles/lighthouse
+
+ansible_ssh_user: centos
+
+nginx:
+  conf: /etc/nginx
+  user_name: nginx
+
+lighthouse:
+  repo: https://github.com/VKCOM/lighthouse.git
+  www_dest: /opt/lighthouse
+  nginx_conf: /etc/nginx/nginx.conf

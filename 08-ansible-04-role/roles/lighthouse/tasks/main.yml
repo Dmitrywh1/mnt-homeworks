@@ -1,0 +1,17 @@
+---
+# tasks file for roles/lighthouse
+- include_tasks: nginx.yml
+- include_tasks: pre_tasks.yml
+- name: Lighthouse | Clone repo
+  become: true
+  git:
+    repo: "{{ lighthouse.repo }}"
+    version: master
+    dest: "{{ lighthouse.www_dest }}"
+- name: Lighthouse | Create lighthouse config
+  become: true
+  template:
+    src: templates/lighthouse.conf.j2
+    dest: /etc/nginx/conf.d/lighthouse.conf
+    mode: 0644
+  notify: Nginx reload
