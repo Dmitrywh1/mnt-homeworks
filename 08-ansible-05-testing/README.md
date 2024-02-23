@@ -60,6 +60,8 @@
 
 5. Добавьте новый тег на коммит с рабочим сценарием в соответствии с семантическим версионированием.
 
+https://github.com/Dmitrywh1/mnt-homeworks/tree/0.0.1/08-ansible-05-testing/roles/vector_role/molecule/default
+
 ### Tox
 
 1. Добавьте в директорию с vector-role файлы из [директории](./example).
