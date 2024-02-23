@@ -22,11 +22,57 @@
 2. Перейдите в каталог с ролью vector-role и создайте сценарий тестирования по умолчанию при помощи `molecule init scenario --driver-name docker`.
 3. Добавьте несколько разных дистрибутивов (oraclelinux:8, ubuntu:latest) для инстансов и протестируйте роль, исправьте найденные ошибки, если они есть.
 
+<details>
+  <summary>Поправил таски для того, чтобы отрабатывали на разных осях, не только rpm-based системах</summary>
+  
+```
+- name: Create install dir
+  ansible.builtin.file:
+    path: "{{ vector_install_dir }}"
+    state: directory
+
+- name: install on rpm based
+  block:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+        dest: "{{ vector_install_dir }}/vector.rpm"
+        validate_certs: no
+    - name: Install vector packages
+      ansible.builtin.yum:
+        name: "{{ vector_install_dir }}/vector.rpm"
+        allow_downgrade: yes
+  when: ansible_pkg_mgr == "yum"
+
+- name: install on deb based
+  block:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/0.35.0/vector_0.35.0-1_amd64.deb"
+        dest: "{{ vector_install_dir }}/vector.deb"
+        validate_certs: no
+    - name: Install vector packages
+      ansible.builtin.apt:
+        deb: "{{ vector_install_dir }}/vector.deb"
+  when: ansible_pkg_mgr == "apt"
+
+- name: Generate vector.toml
+  template: src=vector.toml.j2 dest={{ vector_config }}
+  notify: Start vector service
+```
+
+</details>
+
 ![alt text](image-1.png)
 
 ![alt text](image-2.png)
 
-4. Добавьте несколько assert в verify.yml-файл для  проверки работоспособности vector-role (проверка, что конфиг валидный, проверка успешности запуска и др.). 
+4. Добавьте несколько assert в verify.yml-файл для  проверки работоспособности vector-role (проверка, что конфиг валидный, проверка успешности запуска и др.).
+
+<details>
+  <summary>Добавил пару проверок на предмет версии и наличии записи в конфиг файле</summary>
+  
+
 ```
 - name: Verify
   hosts: all
@@ -52,6 +98,9 @@
       success_msg : "its all ok"
       fail_msg: "nginxdb not found"
 ```
+
+  
+</details>
 
 
 5. Запустите тестирование роли повторно и проверьте, что оно прошло успешно.

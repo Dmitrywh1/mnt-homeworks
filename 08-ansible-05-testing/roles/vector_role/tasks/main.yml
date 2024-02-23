@@ -33,4 +33,4 @@
 
 - name: Generate vector.toml
   template: src=vector.toml.j2 dest={{ vector_config }}
-#  notify: Start vector service
+  notify: Start vector service
