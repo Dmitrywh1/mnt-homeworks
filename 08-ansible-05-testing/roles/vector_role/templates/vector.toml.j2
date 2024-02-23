@@ -1,0 +1,12 @@
+[sources.nginx_log]
+type = "file"
+include = [ "/var/log/nginx/access.log" ]
+read_from = "end"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = ["nginx_log"]
+endpoint = "http://178.154.206.159:8123"
+database = "nginxdb"
+table = "access_logs"
+skip_unknown_fields = true

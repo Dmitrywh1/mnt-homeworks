@@ -1,0 +1,36 @@
+---
+# tasks file for roles/vector-role
+
+- name: Create install dir
+  ansible.builtin.file:
+    path: "{{ vector_install_dir }}"
+    state: directory
+
+- name: install on rpm based
+  block:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.x86_64.rpm"
+        dest: "{{ vector_install_dir }}/vector.rpm"
+        validate_certs: no
+    - name: Install vector packages
+      ansible.builtin.yum:
+        name: "{{ vector_install_dir }}/vector.rpm"
+        allow_downgrade: yes
+  when: ansible_pkg_mgr == "yum"
+
+- name: install on deb based
+  block:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/0.35.0/vector_0.35.0-1_amd64.deb"
+        dest: "{{ vector_install_dir }}/vector.deb"
+        validate_certs: no
+    - name: Install vector packages
+      ansible.builtin.apt:
+        deb: "{{ vector_install_dir }}/vector.deb"
+  when: ansible_pkg_mgr == "apt"
+
+- name: Generate vector.toml
+  template: src=vector.toml.j2 dest={{ vector_config }}
+#  notify: Start vector service

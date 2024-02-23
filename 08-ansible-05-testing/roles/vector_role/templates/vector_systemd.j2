@@ -1,0 +1,11 @@
+   [Unit]
+   Description=My Vector Service
+   After=network.target
+
+   [Service]
+   ExecStart=/bin/vector
+   Restart=always
+
+   [Install]
+   WantedBy=multi-user.target
+   

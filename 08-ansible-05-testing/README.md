@@ -16,10 +16,48 @@
 ### Molecule
 
 1. Запустите  `molecule test -s ubuntu_xenial` (или с любым другим сценарием, не имеет значения) внутри корневой директории clickhouse-role, посмотрите на вывод команды. Данная команда может отработать с ошибками или не отработать вовсе, это нормально. Наша цель - посмотреть как другие в реальном мире используют молекулу И из чего может состоять сценарий тестирования.
+
+![alt text](image.png)
+
 2. Перейдите в каталог с ролью vector-role и создайте сценарий тестирования по умолчанию при помощи `molecule init scenario --driver-name docker`.
 3. Добавьте несколько разных дистрибутивов (oraclelinux:8, ubuntu:latest) для инстансов и протестируйте роль, исправьте найденные ошибки, если они есть.
+
+![alt text](image-1.png)
+
+![alt text](image-2.png)
+
 4. Добавьте несколько assert в verify.yml-файл для  проверки работоспособности vector-role (проверка, что конфиг валидный, проверка успешности запуска и др.). 
+```
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: Get Vector version
+    command: vector --version
+    register: vector_version_output
+  - name: Read Vector config file
+    slurp:
+      src: "/etc/vector/vector.toml"
+    register: vector_config
+  - name: Check Version
+    ansible.builtin.assert:
+      that: 
+        - vector_version_output.stdout == "vector 0.35.0 (x86_64-unknown-linux-gnu e57c0c0 2024-01-08 14:42:10.103908779)"
+      success_msg : "its all ok"
+      fail_msg: "wrong version"
+  - name: Check nginxdb in vector.toml
+    ansible.builtin.assert:
+      that: 
+        - "'nginxdb' in vector_config['content'] | b64decode | string"
+      success_msg : "its all ok"
+      fail_msg: "nginxdb not found"
+```
+
+
 5. Запустите тестирование роли повторно и проверьте, что оно прошло успешно.
+
+![alt text](image-3.png)
+
 5. Добавьте новый тег на коммит с рабочим сценарием в соответствии с семантическим версионированием.
 
 ### Tox

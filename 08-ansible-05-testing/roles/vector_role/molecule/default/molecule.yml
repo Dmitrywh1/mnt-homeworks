@@ -1,0 +1,19 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: centos
+    image: centos:7
+    pre_build_image: true
+  - name: oracle
+    image: dokken/oraclelinux-7
+    pre_build_image: true
+  - name: ubuntu
+    image: myubuntu
+    pre_build_image: true  
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
