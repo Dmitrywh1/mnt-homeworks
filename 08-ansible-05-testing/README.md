@@ -139,7 +139,7 @@ https://github.com/Dmitrywh1/mnt-homeworks/tree/0.0.2/08-ansible-05-testing/role
 
 После выполнения у вас должно получится два сценария molecule и один tox.ini файл в репозитории. Не забудьте указать в ответе теги решений Tox и Molecule заданий. В качестве решения пришлите ссылку на  ваш репозиторий и скриншоты этапов выполнения задания. 
 
-https://github.com/Dmitrywh1/mnt-homeworks/tree/0.0.3/08-ansible-05-testing/roles/vector_role/molecule/default
+https://github.com/Dmitrywh1/mnt-homeworks/tree/0.0.3/08-ansible-05-testing/roles/vector_role/molecule/tox
 
 ## Необязательная часть
 
