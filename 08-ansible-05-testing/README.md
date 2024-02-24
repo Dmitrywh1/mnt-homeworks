@@ -116,12 +116,30 @@ https://github.com/Dmitrywh1/mnt-homeworks/tree/0.0.2/08-ansible-05-testing/role
 1. Добавьте в директорию с vector-role файлы из [директории](./example).
 2. Запустите `docker run --privileged=True -v <path_to_repo>:/opt/vector-role -w /opt/vector-role -it aragast/netology:latest /bin/bash`, где path_to_repo — путь до корня репозитория с vector-role на вашей файловой системе.
 3. Внутри контейнера выполните команду `tox`, посмотрите на вывод.
+
+![alt text](image.png)
+
 5. Создайте облегчённый сценарий для `molecule` с драйвером `molecule_podman`. Проверьте его на исполнимость.
+
+![alt text](image-1.png)
+
+`Проверено`
+
+![alt text](image-2.png)
+
 6. Пропишите правильную команду в `tox.ini`, чтобы запускался облегчённый сценарий.
+
+![alt text](image-3.png)
+
 8. Запустите команду `tox`. Убедитесь, что всё отработало успешно.
+
+![alt text](image-4.png)
+
 9. Добавьте новый тег на коммит с рабочим сценарием в соответствии с семантическим версионированием.
 
 После выполнения у вас должно получится два сценария molecule и один tox.ini файл в репозитории. Не забудьте указать в ответе теги решений Tox и Molecule заданий. В качестве решения пришлите ссылку на  ваш репозиторий и скриншоты этапов выполнения задания. 
+
+https://github.com/Dmitrywh1/mnt-homeworks/tree/0.0.3/08-ansible-05-testing/roles/vector_role/molecule/default
 
 ## Необязательная часть
 
