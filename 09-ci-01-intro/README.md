@@ -55,6 +55,8 @@
 ![alt text](img/image-6.png)
 2. Если всё отработалось в рамках ожидания — выгрузите схемы workflow для импорта в XML. Файлы с workflow и скриншоты workflow приложите к решению задания.
 
+[Workflows](https://github.com/Dmitrywh1/mnt-homeworks/tree/MNT-video/09-ci-01-intro/Workflows)
+
 ---
 
 ### Как оформить решение задания
