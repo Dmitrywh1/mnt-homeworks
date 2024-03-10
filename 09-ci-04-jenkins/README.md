@@ -63,6 +63,7 @@ node("ansible"){
 
 [scripted](https://github.com/Dmitrywh1/mnt-homeworks/blob/MNT-video/09-ci-04-jenkins/ScriptedJenkinsfile)
 [declaretive](https://github.com/Dmitrywh1/mnt-homeworks/blob/MNT-video/09-ci-04-jenkins/jenkinsfile)
+
 9. Сопроводите процесс настройки скриншотами для каждого пункта задания!!
 
 ## Необязательная часть
