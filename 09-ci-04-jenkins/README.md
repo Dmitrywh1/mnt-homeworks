@@ -10,13 +10,59 @@
 ## Основная часть
 
 1. Сделать Freestyle Job, который будет запускать `molecule test` из любого вашего репозитория с ролью.
+
+![alt text](img/image.png)
+
+![alt text](img/image-1.png)
+
+
 2. Сделать Declarative Pipeline Job, который будет запускать `molecule test` из любого вашего репозитория с ролью.
+
+![alt text](img/image-2.png)
+
+![alt text](img/image-3.png)
+
 3. Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`.
+
+![alt text](img/image-4.png)
+
 4. Создать Multibranch Pipeline на запуск `Jenkinsfile` из репозитория.
+
+![alt text](img/image-5.png)
+
+![alt text](img/image-6.png)
+
 5. Создать Scripted Pipeline, наполнить его скриптом из [pipeline](./pipeline).
 6. Внести необходимые изменения, чтобы Pipeline запускал `ansible-playbook` без флагов `--check --diff`, если не установлен параметр при запуске джобы (prod_run = True). По умолчанию параметр имеет значение False и запускает прогон с флагами `--check --diff`.
 7. Проверить работоспособность, исправить ошибки, исправленный Pipeline вложить в репозиторий в файл `ScriptedJenkinsfile`.
+
+![alt text](img/image-7.png)
+
+```
+node("ansible"){
+    stage("Git checkout"){
+        git url: 'https://github.com/aragastmatb/example-playbook.git'
+    }
+    stage("prod_run") {
+        prod_run = params.prod_run
+    }
+    stage("Run playbook"){
+        if (prod_run){
+            sh 'ansible-playbook site.yml -i inventory/prod.yml --check --diff'
+        }
+        else {
+            sh 'ansible-playbook site.yml -i inventory/prod.yml'
+        }
+        
+    }
+}
+```
+
+
 8. Отправить ссылку на репозиторий с ролью и Declarative Pipeline и Scripted Pipeline.
+
+[scripted](https://github.com/Dmitrywh1/mnt-homeworks/blob/MNT-video/09-ci-04-jenkins/ScriptedJenkinsfile)
+[declaretive](https://github.com/Dmitrywh1/mnt-homeworks/blob/MNT-video/09-ci-04-jenkins/jenkinsfile)
 9. Сопроводите процесс настройки скриншотами для каждого пункта задания!!
 
 ## Необязательная часть
