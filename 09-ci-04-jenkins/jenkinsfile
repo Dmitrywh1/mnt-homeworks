@@ -1,0 +1,17 @@
+pipeline {
+    agent {
+  label 'ansible'
+}
+    stages {
+        stage('Clone git repo') {
+            steps {
+                sh 'git clone https://github.com/Dmitrywh1/mnt-homeworks.git'
+            }
+        }
+        stage('cd to vector role and run molecule test') {
+            steps {
+                sh 'cd mnt-homeworks/08-ansible-05-testing/roles/vector_role && molecule test -s default'
+            }
+        }
+    }
+}
