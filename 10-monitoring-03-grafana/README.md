@@ -26,7 +26,7 @@
 1. Подключите поднятый вами prometheus, как источник данных.
 1. Решение домашнего задания — скриншот веб-интерфейса grafana со списком подключенных Datasource.
 
-![alt text](image.png)
+![alt text](img/image.png)
 
 
 ## Задание 2
@@ -61,19 +61,19 @@ node_filesystem_avail_bytes{device="/dev/vda2"}
 ```
 Для решения этого задания приведите promql-запросы для выдачи этих метрик, а также скриншот получившейся Dashboard.
 
-![alt text](image-1.png)
+![alt text](img/image-1.png)
 
 ## Задание 3
 
 1. Создайте для каждой Dashboard подходящее правило alert — можно обратиться к первой лекции в блоке «Мониторинг».
 1. В качестве решения задания приведите скриншот вашей итоговой Dashboard.
 
-![alt text](image-2.png)
+![alt text](img/image-2.png)
 
 ```
 Через stress загрузил CPU - нотификация приходит в ТГ
 ```
-![alt text](image-3.png)
+![alt text](img/image-3.png)
 
 ## Задание 4
 
