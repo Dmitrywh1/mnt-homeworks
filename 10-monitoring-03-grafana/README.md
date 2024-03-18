@@ -80,6 +80,8 @@ node_filesystem_avail_bytes{device="/dev/vda2"}
 1. Сохраните ваш Dashboard.Для этого перейдите в настройки Dashboard, выберите в боковом меню «JSON MODEL». Далее скопируйте отображаемое json-содержимое в отдельный файл и сохраните его.
 1. В качестве решения задания приведите листинг этого файла.
 
+[dashboard.json](https://github.com/Dmitrywh1/mnt-homeworks/blob/MNT-video/10-monitoring-03-grafana/dashboard.json)
+
 ---
 
 ### Как оформить решение задания
